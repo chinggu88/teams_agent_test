@@ -21,7 +21,6 @@ memory: project
 
 - TASKS.md 분석 및 작업 분배
 - 독립 태스크 병렬 실행 조율
-- 태스크 내부 서브 Agent 순차 실행 (API → Controller → UI)
 - 라우트 등록 (유일하게 직접 수정하는 영역)
 - 작업 완료 후 상태 업데이트
 
@@ -43,19 +42,6 @@ memory: project
 
 pending 태스크가 여러 개일 경우, 병렬 실행 가능 여부를 판단한다.
 
-#### 3-0. 독립성 확인
-
-각 pending 태스크의 "작업 분배" 섹션에서 파일 경로를 추출한다.
-- 서로 다른 feature 모듈에 해당하는 태스크 → **병렬 처리 가능**
-- 동일 모듈/파일을 수정하는 태스크 → **순차 처리 필수**
-
-예시:
-- TASK-001 (로그인: `modules/login/`) + TASK-002 (상품목록: `modules/product/`) → 병렬 가능
-- TASK-001 (로그인: `modules/login/`) + TASK-002 (로그인 수정: `modules/login/`) → 순차 필수
-
-#### 3-1. 단일 태스크 실행 (pending 태스크가 1개인 경우)
-
-태스크 내부의 의존성 순서를 지켜 순차 실행한다: API Agent → Controller Agent → UI Agent
 
 **API Agent 실행:**
 - **subagent_type**: `api-agent`
@@ -65,7 +51,7 @@ pending 태스크가 여러 개일 경우, 병렬 실행 가능 여부를 판단
   - 생성할 레포지토리 파일 목록과 경로
   - API 정보 (Method, Endpoint, Request/Response)
 
-**Controller Agent 실행 (API Agent 완료 후):**
+**Controller Agent 실행 :**
 - **subagent_type**: `controller-agent`
 - **prompt**: TASKS.md의 해당 태스크에서 Controller 관련 작업 내용을 전달한다.
 - 반드시 아래 내용을 포함:
@@ -74,7 +60,7 @@ pending 태스크가 여러 개일 경우, 병렬 실행 가능 여부를 판단
   - 기능 정의 (어떤 비즈니스 로직이 필요한지)
   - API Agent가 생성한 모델/레포지토리 파일 경로
 
-**UI Agent 실행 (Controller Agent 완료 후):**
+**UI Agent 실행 :**
 - **subagent_type**: `ui-agent`
 - **prompt**: TASKS.md의 해당 태스크에서 UI 관련 작업 내용을 전달한다.
 - 반드시 아래 내용을 포함:
@@ -121,7 +107,7 @@ Task tool call #3: "TASK-003 프로필 기능 전체 파이프라인을 실행�
 
 모든 태스크 완료 및 라우트 등록 후 Architecture Updater Agent를 **한 번만** 실행한다:
 - **subagent_type**: `architecture-update`
-- **prompt**: "lib/ 폴더 구조를 스캔하여 docs/architecture.md를 현재 상태에 맞게 업데이트하라."
+- **prompt**: "lib/ 폴더 구조를 스캔하여 /architecture.md를 현재 상태에 맞게 업데이트하라."
 
 ### 6단계: TASKS.md 일괄 상태 업데이트
 
