@@ -11,7 +11,7 @@ GetxController 작성 시 프로젝트 컨벤션을 따르는 지침서입니다
 ```dart
 
 class FeatureController extends GetxController {
-  // 1. 싱글톤 접근자 (선택사항)
+  // 1. 싱글톤 접근자
   static FeatureController get to => Get.find();
 
   // 2. Repository 인스턴스
@@ -369,16 +369,6 @@ class ScheduleRegisterController extends GetxController {
   }
 }
 ```
-
-### 7.2 Get.find 사용
-
-```dart
-void someMethod() {
-  final mypageController = Get.find<MypageController>();
-  final interval = mypageController.bookingIntervalMinutes;
-}
-```
-
 ---
 
 ## 8. 에러 처리 및 로딩
