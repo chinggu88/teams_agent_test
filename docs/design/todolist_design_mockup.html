@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TodoList App - Design Mockup (390x844)</title>
+<style>
+/* ===== RESET & BASE ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===== DESIGN TOKENS ===== */
+:root {
+  /* Colors */
+  --primary-500: #2563EB;
+  --primary-400: #3B82F6;
+  --primary-600: #1D4ED8;
+  --primary-700: #1E40AF;
+  --secondary: #64748B;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --bg: #FFFFFF;
+  --surface: #F8FAFC;
+  --border: #E2E8F0;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-disabled: #9CA3AF;
+  --priority-high: #EF4444;
+  --priority-normal: #F59E0B;
+  --priority-low: #22C55E;
+
+  /* Spacing */
+  --xs: 4px;
+  --sm: 8px;
+  --md: 16px;
+  --lg: 24px;
+  --xl: 32px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'SF Pro Display', 'Segoe UI', sans-serif;
+  background: #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* ===== NAVIGATION TABS ===== */
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 800px;
+}
+.nav-tab {
+  padding: 10px 20px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.nav-tab:hover { border-color: var(--primary-400); color: var(--primary-500); }
+.nav-tab.active { background: var(--primary-500); color: white; border-color: var(--primary-500); }
+
+/* ===== SCREEN INFO ===== */
+.screen-info {
+  text-align: center;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.screen-info strong { color: var(--text-primary); font-size: 16px; }
+
+/* ===== PHONE FRAME ===== */
+.phone-frame {
+  width: 390px;
+  height: 844px;
+  background: var(--bg);
+  border-radius: 44px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg), 0 0 0 8px #1F2937, 0 0 0 10px #374151;
+  position: relative;
+  display: none;
+  flex-direction: column;
+}
+.phone-frame.active { display: flex; }
+
+/* ===== STATUS BAR ===== */
+.status-bar {
+  height: 54px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 28px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.status-bar-time { font-size: 15px; font-weight: 700; }
+.status-bar-icons { display: flex; gap: 6px; align-items: center; font-size: 12px; }
+
+/* ===== HEADER ===== */
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--lg);
+  flex-shrink: 0;
+  position: relative;
+}
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  flex: 1;
+}
+.header-title-center {
+  font-size: 18px;
+  font-weight: 600;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.header-back {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+.header-action {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+/* ===== CONTENT AREA ===== */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav {
+  height: 84px;
+  display: flex;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+  padding-bottom: 20px;
+}
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-disabled);
+  font-size: 11px;
+  cursor: pointer;
+}
+.bottom-nav-item.active { color: var(--primary-500); }
+.bottom-nav-icon { font-size: 22px; }
+
+/* ===== BUTTON ===== */
+.btn {
+  height: 48px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  transition: all 0.15s;
+}
+.btn-primary { background: var(--primary-500); color: white; }
+.btn-primary:hover { background: var(--primary-600); }
+.btn-outline { background: transparent; color: var(--primary-500); border: 1.5px solid var(--primary-500); }
+.btn-danger { background: var(--error); color: white; }
+.btn-social {
+  background: white;
+  color: var(--text-primary);
+  border: 1.5px solid var(--border);
+  font-weight: 500;
+}
+
+/* ===== INPUT ===== */
+.input-group { display: flex; flex-direction: column; gap: 6px; }
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.input-required { color: var(--error); }
+.input-field {
+  height: 48px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 var(--md);
+  font-size: 15px;
+  color: var(--text-primary);
+  background: white;
+  outline: none;
+  display: flex;
+  align-items: center;
+}
+.input-field::placeholder,
+.input-placeholder { color: var(--text-disabled); font-size: 15px; }
+.input-field-with-icon {
+  position: relative;
+}
+.input-field-with-icon .input-field { padding-right: 48px; }
+.input-icon-right {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-disabled);
+  cursor: pointer;
+  font-size: 18px;
+}
+.textarea-field {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--md);
+  font-size: 15px;
+  min-height: 100px;
+  color: var(--text-primary);
+  resize: none;
+  outline: none;
+}
+
+/* ===== CHIP ===== */
+.chip-group { display: flex; gap: var(--sm); flex-wrap: wrap; }
+.chip {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: white;
+}
+.chip.selected { border-color: var(--primary-500); color: var(--primary-500); background: #EFF6FF; }
+.chip-high.selected { border-color: var(--priority-high); color: var(--priority-high); background: #FEF2F2; }
+.chip-normal.selected { border-color: var(--priority-normal); color: var(--priority-normal); background: #FFFBEB; }
+.chip-low.selected { border-color: var(--priority-low); color: var(--priority-low); background: #F0FDF4; }
+
+/* ===== CARD ===== */
+.todo-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--md);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+.todo-card:hover { box-shadow: var(--shadow-md); }
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.checkbox.checked {
+  background: var(--primary-500);
+  border-color: var(--primary-500);
+  color: white;
+  font-size: 14px;
+}
+
+.todo-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.todo-title { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+.todo-title.completed { text-decoration: line-through; color: var(--text-disabled); }
+.todo-due { font-size: 12px; color: var(--text-secondary); }
+
+.priority-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.priority-high { background: var(--priority-high); }
+.priority-normal { background: var(--priority-normal); }
+.priority-low { background: var(--priority-low); }
+
+/* ===== COMPLETED CARD ===== */
+.completed-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--md);
+  display: flex;
+  align-items: center;
+  gap: var(--md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+.completed-icon { font-size: 20px; flex-shrink: 0; }
+.completed-info { flex: 1; }
+.completed-title { font-size: 15px; font-weight: 500; color: var(--text-secondary); text-decoration: line-through; }
+.completed-date { font-size: 12px; color: var(--text-disabled); margin-top: 2px; }
+.restore-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-md);
+  color: var(--primary-500);
+  font-size: 18px;
+  cursor: pointer;
+  background: #EFF6FF;
+}
+
+/* ===== TAB BAR ===== */
+.tab-bar {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  padding: 0 var(--lg);
+  flex-shrink: 0;
+}
+.tab-item {
+  flex: 1;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+}
+.tab-item.active { color: var(--primary-500); border-bottom-color: var(--primary-500); font-weight: 600; }
+
+/* ===== PROGRESS ===== */
+.progress-section {
+  padding: var(--md) var(--lg);
+}
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--sm);
+}
+.progress-text { font-size: 14px; color: var(--text-secondary); }
+.progress-count { font-size: 14px; font-weight: 600; color: var(--primary-500); }
+.progress-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--primary-500);
+  border-radius: var(--radius-full);
+  transition: width 0.3s;
+}
+
+/* ===== FAB ===== */
+.fab {
+  position: absolute;
+  right: 24px;
+  bottom: 100px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary-500);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  z-index: 10;
+}
+.fab:hover { background: var(--primary-600); }
+
+/* ===== LIST TILE ===== */
+.list-tile {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.list-tile-text { flex: 1; font-size: 16px; }
+.list-tile-action { color: var(--text-disabled); font-size: 20px; }
+
+/* ===== SWITCH ===== */
+.switch {
+  width: 48px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--primary-500);
+  position: relative;
+  cursor: pointer;
+}
+.switch .knob {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  box-shadow: var(--shadow-sm);
+}
+.switch.off { background: var(--border); }
+.switch.off .knob { right: auto; left: 3px; }
+
+/* ===== DIVIDER ===== */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-disabled);
+  font-size: 13px;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ===== AVATAR ===== */
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: var(--text-disabled);
+}
+
+/* ===== PAGE INDICATOR ===== */
+.page-indicator {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.dot.active { background: var(--primary-500); width: 24px; border-radius: 4px; }
+
+/* ===== LINK ===== */
+.link {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+  cursor: pointer;
+}
+.link-primary { color: var(--primary-500); font-weight: 600; }
+
+/* ===== BADGE ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+.badge-high { background: #FEF2F2; color: var(--priority-high); }
+.badge-normal { background: #FFFBEB; color: var(--priority-normal); }
+.badge-low { background: #F0FDF4; color: var(--priority-low); }
+
+/* ===== INFO ROW ===== */
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+.info-icon { font-size: 18px; color: var(--text-secondary); width: 24px; text-align: center; }
+.info-label { font-size: 14px; color: var(--text-secondary); width: 60px; }
+.info-value { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+
+/* ===== MEMO SECTION ===== */
+.memo-section {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--md);
+  background: var(--surface);
+}
+.memo-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.memo-content { font-size: 15px; line-height: 1.6; color: var(--text-primary); }
+
+/* ===== BUTTON ROW ===== */
+.btn-row { display: flex; gap: 12px; }
+.btn-row .btn { flex: 1; }
+
+/* ===== DATE PICKER ===== */
+.date-picker {
+  height: 48px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 var(--md);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-disabled);
+  font-size: 15px;
+  cursor: pointer;
+}
+.date-picker-icon { font-size: 18px; }
+
+/* ===== DESIGN TOKEN PANEL ===== */
+.token-panel {
+  display: none;
+  max-width: 800px;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+.token-panel.active { display: block; }
+.token-section { margin-bottom: 32px; }
+.token-section h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text-primary); }
+.color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.color-swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.color-box {
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+.color-name { font-size: 12px; font-weight: 600; }
+.color-hex { font-size: 11px; color: var(--text-secondary); }
+
+.typo-sample { margin-bottom: 12px; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); }
+.typo-meta { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+
+.component-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+.component-sample {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.component-label { font-size: 11px; color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<div class="nav-tabs">
+  <button class="nav-tab" onclick="showScreen('tokens')">Design System</button>
+  <button class="nav-tab active" onclick="showScreen('s01')">S01 Onboarding</button>
+  <button class="nav-tab" onclick="showScreen('s02')">S02 Login</button>
+  <button class="nav-tab" onclick="showScreen('s03')">S03 Home</button>
+  <button class="nav-tab" onclick="showScreen('s04')">S04 Add Todo</button>
+  <button class="nav-tab" onclick="showScreen('s05')">S05 Detail</button>
+  <button class="nav-tab" onclick="showScreen('s06')">S06 Completed</button>
+  <button class="nav-tab" onclick="showScreen('s07')">S07 MyPage</button>
+</div>
+
+<!-- ============================================== -->
+<!-- DESIGN SYSTEM TOKEN PANEL                      -->
+<!-- ============================================== -->
+<div class="token-panel" id="panel-tokens">
+  <h2 style="margin-bottom:24px;">Design System / Tokens</h2>
+
+  <div class="token-section">
+    <h3>Colors</h3>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-box" style="background:#2563EB"></div><div class="color-name">Primary/500</div><div class="color-hex">#2563EB</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#3B82F6"></div><div class="color-name">Primary/400</div><div class="color-hex">#3B82F6</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#1D4ED8"></div><div class="color-name">Primary/600</div><div class="color-hex">#1D4ED8</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#64748B"></div><div class="color-name">Secondary</div><div class="color-hex">#64748B</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#22C55E"></div><div class="color-name">Success</div><div class="color-hex">#22C55E</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#F59E0B"></div><div class="color-name">Warning</div><div class="color-hex">#F59E0B</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#EF4444"></div><div class="color-name">Error</div><div class="color-hex">#EF4444</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#FFFFFF"></div><div class="color-name">Background</div><div class="color-hex">#FFFFFF</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#F8FAFC"></div><div class="color-name">Surface</div><div class="color-hex">#F8FAFC</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#E2E8F0"></div><div class="color-name">Border</div><div class="color-hex">#E2E8F0</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#1F2937"></div><div class="color-name">Text/Primary</div><div class="color-hex">#1F2937</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#6B7280"></div><div class="color-name">Text/Secondary</div><div class="color-hex">#6B7280</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#9CA3AF"></div><div class="color-name">Text/Disabled</div><div class="color-hex">#9CA3AF</div></div>
+    </div>
+  </div>
+
+  <div class="token-section">
+    <h3>Priority Colors</h3>
+    <div class="color-grid">
+      <div class="color-swatch"><div class="color-box" style="background:#EF4444"></div><div class="color-name">High</div><div class="color-hex">#EF4444</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#F59E0B"></div><div class="color-name">Normal</div><div class="color-hex">#F59E0B</div></div>
+      <div class="color-swatch"><div class="color-box" style="background:#22C55E"></div><div class="color-name">Low</div><div class="color-hex">#22C55E</div></div>
+    </div>
+  </div>
+
+  <div class="token-section">
+    <h3>Typography</h3>
+    <div class="typo-sample">
+      <div style="font-size:24px;font-weight:700;line-height:32px;">Title/Large - 24px Bold</div>
+      <div class="typo-meta">24px / Bold (700) / Line Height 32px</div>
+    </div>
+    <div class="typo-sample">
+      <div style="font-size:20px;font-weight:600;line-height:28px;">Title/Medium - 20px SemiBold</div>
+      <div class="typo-meta">20px / SemiBold (600) / Line Height 28px</div>
+    </div>
+    <div class="typo-sample">
+      <div style="font-size:16px;font-weight:600;line-height:24px;">Title/Small - 16px SemiBold</div>
+      <div class="typo-meta">16px / SemiBold (600) / Line Height 24px</div>
+    </div>
+    <div class="typo-sample">
+      <div style="font-size:16px;font-weight:400;line-height:24px;">Body/Large - 16px Regular</div>
+      <div class="typo-meta">16px / Regular (400) / Line Height 24px</div>
+    </div>
+    <div class="typo-sample">
+      <div style="font-size:14px;font-weight:400;line-height:20px;">Body/Medium - 14px Regular</div>
+      <div class="typo-meta">14px / Regular (400) / Line Height 20px</div>
+    </div>
+    <div class="typo-sample">
+      <div style="font-size:12px;font-weight:400;line-height:16px;">Caption - 12px Regular</div>
+      <div class="typo-meta">12px / Regular (400) / Line Height 16px</div>
+    </div>
+  </div>
+
+  <div class="token-section">
+    <h3>Components Preview</h3>
+    <div class="component-grid">
+      <div class="component-sample">
+        <button class="btn btn-primary" style="width:160px;">Primary Button</button>
+        <div class="component-label">Button/Primary</div>
+      </div>
+      <div class="component-sample">
+        <button class="btn btn-outline" style="width:160px;">Outline Button</button>
+        <div class="component-label">Button/Outline</div>
+      </div>
+      <div class="component-sample">
+        <button class="btn btn-danger" style="width:160px;">Danger Button</button>
+        <div class="component-label">Button/Danger</div>
+      </div>
+      <div class="component-sample">
+        <button class="btn btn-social" style="width:160px;">Social Button</button>
+        <div class="component-label">Button/Social</div>
+      </div>
+      <div class="component-sample">
+        <div class="chip selected">Selected Chip</div>
+        <div class="component-label">Chip/Selected</div>
+      </div>
+      <div class="component-sample">
+        <div class="chip">Default Chip</div>
+        <div class="component-label">Chip/Default</div>
+      </div>
+      <div class="component-sample">
+        <div class="switch"><div class="knob"></div></div>
+        <div class="component-label">Switch/On</div>
+      </div>
+      <div class="component-sample">
+        <div class="switch off"><div class="knob"></div></div>
+        <div class="component-label">Switch/Off</div>
+      </div>
+      <div class="component-sample">
+        <div class="checkbox"></div>
+        <div class="component-label">Checkbox/Unchecked</div>
+      </div>
+      <div class="component-sample">
+        <div class="checkbox checked">&#10003;</div>
+        <div class="component-label">Checkbox/Checked</div>
+      </div>
+      <div class="component-sample">
+        <div style="display:flex;gap:8px;">
+          <span class="badge badge-high">High</span>
+          <span class="badge badge-normal">Normal</span>
+          <span class="badge badge-low">Low</span>
+        </div>
+        <div class="component-label">Priority Badges</div>
+      </div>
+      <div class="component-sample">
+        <div class="avatar">&#128100;</div>
+        <div class="component-label">Avatar</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="token-section">
+    <h3>Spacing & Radius</h3>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="text-align:center;"><div style="width:4px;height:40px;background:var(--primary-500);margin:0 auto 4px;"></div><div class="component-label">xs: 4px</div></div>
+      <div style="text-align:center;"><div style="width:8px;height:40px;background:var(--primary-500);margin:0 auto 4px;"></div><div class="component-label">sm: 8px</div></div>
+      <div style="text-align:center;"><div style="width:16px;height:40px;background:var(--primary-500);margin:0 auto 4px;"></div><div class="component-label">md: 16px</div></div>
+      <div style="text-align:center;"><div style="width:24px;height:40px;background:var(--primary-500);margin:0 auto 4px;"></div><div class="component-label">lg: 24px</div></div>
+      <div style="text-align:center;"><div style="width:32px;height:40px;background:var(--primary-500);margin:0 auto 4px;"></div><div class="component-label">xl: 32px</div></div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:20px;">
+      <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--primary-400);border-radius:4px;margin:0 auto 4px;"></div><div class="component-label">sm: 4px</div></div>
+      <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--primary-400);border-radius:8px;margin:0 auto 4px;"></div><div class="component-label">md: 8px</div></div>
+      <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--primary-400);border-radius:12px;margin:0 auto 4px;"></div><div class="component-label">lg: 12px</div></div>
+      <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--primary-400);border-radius:9999px;margin:0 auto 4px;"></div><div class="component-label">full: 9999px</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- S01: ONBOARDING                                -->
+<!-- ============================================== -->
+<div class="screen-info" id="info-s01">
+  <strong>S01 - Onboarding</strong><br>
+  390 x 844 | iPhone 14 | Mobile First
+</div>
+<div class="phone-frame active" id="screen-s01">
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>&#128267;</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content" style="align-items:center;justify-content:center;padding:0 var(--lg);">
+    <!-- Illustration Area -->
+    <div style="width:200px;height:200px;border-radius:50%;background:linear-gradient(135deg,#EFF6FF,#DBEAFE);display:flex;align-items:center;justify-content:center;margin-bottom:32px;">
+      <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+        <rect x="16" y="12" width="48" height="56" rx="6" fill="#2563EB" opacity="0.2"/>
+        <rect x="20" y="16" width="40" height="48" rx="4" fill="white" stroke="#2563EB" stroke-width="2"/>
+        <line x1="28" y1="28" x2="44" y2="28" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+        <line x1="28" y1="36" x2="52" y2="36" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+        <line x1="28" y1="44" x2="48" y2="44" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+        <circle cx="28" cy="28" r="3" fill="#22C55E"/>
+        <path d="M26 28 L27.5 29.5 L30 27" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Page Indicator -->
+    <div class="page-indicator" style="margin-bottom:32px;">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Title & Description -->
+    <div style="text-align:center;margin-bottom:48px;">
+      <div style="font-size:24px;font-weight:700;line-height:32px;margin-bottom:12px;">
+        할 일을 쉽고 빠르게 관리
+      </div>
+      <div style="font-size:15px;line-height:22px;color:var(--text-secondary);">
+        TodoList로 매일 매일을<br>계획적으로 관리하세요.
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <button class="btn btn-primary" style="margin-bottom:16px;">시작하기</button>
+    <div class="link" style="padding:12px;">건너뛰기</div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- S02: LOGIN                                     -->
+<!-- ============================================== -->
+<div class="screen-info" id="info-s02" style="display:none;">
+  <strong>S02 - Login</strong><br>
+  390 x 844 | iPhone 14 | Mobile First
+</div>
+<div class="phone-frame" id="screen-s02">
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>&#128267;</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="header-title-center">로그인</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content" style="padding:0 var(--lg);overflow-y:auto;">
+    <!-- Logo -->
+    <div style="display:flex;justify-content:center;margin:16px 0 32px;">
+      <div style="width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg,#2563EB,#3B82F6);display:flex;align-items:center;justify-content:center;">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <rect x="6" y="4" width="24" height="28" rx="4" fill="white" opacity="0.9"/>
+          <line x1="12" y1="14" x2="24" y2="14" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+          <line x1="12" y1="20" x2="20" y2="20" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="14" r="2" fill="#22C55E"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Email Input -->
+    <div class="input-group" style="margin-bottom:var(--md);">
+      <label class="input-label">이메일</label>
+      <div class="input-field">
+        <span class="input-placeholder">example@email.com</span>
+      </div>
+    </div>
+
+    <!-- Password Input -->
+    <div class="input-group" style="margin-bottom:var(--lg);">
+      <label class="input-label">비밀번호</label>
+      <div class="input-field-with-icon">
+        <div class="input-field">
+          <span class="input-placeholder">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</span>
+        </div>
+        <span class="input-icon-right">&#128065;</span>
+      </div>
+    </div>
+
+    <!-- Login Button -->
+    <button class="btn btn-primary" style="margin-bottom:var(--lg);">로그인</button>
+
+    <!-- Divider -->
+    <div class="divider" style="margin-bottom:var(--lg);">또는</div>
+
+    <!-- Social Buttons -->
+    <button class="btn btn-social" style="margin-bottom:var(--sm);">
+      <svg width="20" height="20" viewBox="0 0 20 20"><path d="M18.17 8.37H10v3.41h4.59c-.4 2.01-2.16 3.41-4.59 3.41A5.18 5.18 0 014.82 10 5.18 5.18 0 0110 4.82c1.25 0 2.39.44 3.28 1.17l2.56-2.56A8.84 8.84 0 0010 1.18 8.82 8.82 0 001.18 10 8.82 8.82 0 0010 18.82c4.47 0 8.18-3.24 8.18-8.82 0-.55-.06-1.08-.17-1.59z" fill="#4285F4"/></svg>
+      Google로 계속하기
+    </button>
+    <button class="btn btn-social" style="margin-bottom:var(--lg);">
+      <svg width="20" height="20" viewBox="0 0 20 20"><path d="M15.53 10.47c-.02-2.13 1.74-3.15 1.82-3.2-1-.46-2.53-.52-3.15-.53-1.34-.14-2.61.79-3.29.79-.68 0-1.73-.77-2.85-.75a4.2 4.2 0 00-3.54 2.16c-1.51 2.62-.39 6.5 1.08 8.63.72 1.04 1.58 2.21 2.7 2.17 1.09-.04 1.5-.7 2.81-.7 1.31 0 1.68.7 2.82.68 1.17-.02 1.91-1.06 2.62-2.11a8.74 8.74 0 001.19-2.44 3.76 3.76 0 01-2.28-3.45z" fill="#1F2937"/></svg>
+      Apple로 계속하기
+    </button>
+
+    <!-- Sign up link -->
+    <div style="text-align:center;padding-bottom:24px;">
+      <span class="link">아직 회원이 아니신가요? </span>
+      <span class="link link-primary">회원가입</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- S03: HOME                                      -->
+<!-- ============================================== -->
+<div class="screen-info" id="info-s03" style="display:none;">
+  <strong>S03 - Home (Todo List)</strong><br>
+  390 x 844 | iPhone 14 | Mobile First
+</div>
+<div class="phone-frame" id="screen-s03">
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>&#128267;</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="header-title">오늘의 할 일</span>
+    <div class="header-action">&#9881;</div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <div class="tab-item active">오늘</div>
+    <div class="tab-item">전체</div>
+    <div class="tab-item">태그별</div>
+  </div>
+
+  <!-- Progress Section -->
+  <div class="progress-section">
+    <div class="progress-label">
+      <span class="progress-text">오늘의 진행률</span>
+      <span class="progress-count">3/5</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:60%"></div>
+    </div>
+  </div>
+
+  <!-- Content / Todo List -->
+  <div class="content" style="padding:0 var(--md);gap:var(--sm);padding-bottom:80px;">
+    <!-- Card 1 -->
+    <div class="todo-card">
+      <div class="checkbox"></div>
+      <div class="todo-info">
+        <div class="todo-title">프로젝트 회의 준비</div>
+        <div class="todo-due">오늘 18:00</div>
+      </div>
+      <div class="priority-dot priority-high"></div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="todo-card">
+      <div class="checkbox"></div>
+      <div class="todo-info">
+        <div class="todo-title">운동 하기</div>
+        <div class="todo-due">오늘 14:00</div>
+      </div>
+      <div class="priority-dot priority-normal"></div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="todo-card">
+      <div class="checkbox"></div>
+      <div class="todo-info">
+        <div class="todo-title">책 1장 읽기</div>
+        <div class="todo-due">오늘 13:00</div>
+      </div>
+      <div class="priority-dot priority-low"></div>
+    </div>
+
+    <!-- Card 4 (Completed) -->
+    <div class="todo-card" style="opacity:0.7;">
+      <div class="checkbox checked">&#10003;</div>
+      <div class="todo-info">
+        <div class="todo-title completed">이메일 확인</div>
+        <div class="todo-due">오늘</div>
+      </div>
+    </div>
+
+    <!-- Card 5 (Completed) -->
+    <div class="todo-card" style="opacity:0.7;">
+      <div class="checkbox checked">&#10003;</div>
+      <div class="todo-info">
+        <div class="todo-title completed">아침 회의 참석</div>
+        <div class="todo-due">오늘 09:00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <div class="fab">+</div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="bottom-nav-item active">
+      <span class="bottom-nav-icon">&#127968;</span>
+      <span>홈</span>
+    </div>
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#128269;</span>
+      <span>검색</span>
+    </div>
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#9989;</span>
+      <span>완료</span>
+    </div>
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#128100;</span>
+      <span>마이</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- S04: ADD TODO                                  -->
+<!-- ============================================== -->
+<div class="screen-info" id="info-s04" style="display:none;">
+  <strong>S04 - Add Todo</strong><br>
+  390 x 844 | iPhone 14 | Mobile First
+</div>
+<div class="phone-frame" id="screen-s04">
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>&#128267;</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-back">&#8592;</div>
+    <span class="header-title-center">할 일 추가</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content" style="padding:var(--md) var(--lg);gap:20px;overflow-y:auto;">
+    <!-- Title Input -->
+    <div class="input-group">
+      <label class="input-label">제목 <span class="input-required">*</span></label>
+      <div class="input-field">
+        <span class="input-placeholder">할 일을 입력하세요</span>
+      </div>
+    </div>
+
+    <!-- Memo TextArea -->
+    <div class="input-group">
+      <label class="input-label">메모</label>
+      <div class="textarea-field" style="display:flex;align-items:flex-start;">
+        <span class="input-placeholder">상세 내용을 입력하세요</span>
+      </div>
+    </div>
+
+    <!-- Date Picker -->
+    <div class="input-group">
+      <label class="input-label">마감일</label>
+      <div class="date-picker">
+        <span class="date-picker-icon">&#128197;</span>
+        <span>날짜 선택</span>
+      </div>
+    </div>
+
+    <!-- Priority Chips -->
+    <div class="input-group">
+      <label class="input-label">우선순위</label>
+      <div class="chip-group">
+        <div class="chip chip-high">높음</div>
+        <div class="chip chip-normal selected">보통</div>
+        <div class="chip chip-low">낮음</div>
+      </div>
+    </div>
+
+    <!-- Tag Chips -->
+    <div class="input-group">
+      <label class="input-label">태그</label>
+      <div class="chip-group">
+        <div class="chip selected">업무</div>
+        <div class="chip">개인</div>
+        <div class="chip">학습</div>
+        <div class="chip" style="border-style:dashed;">+ 추가</div>
+      </div>
+    </div>
+
+    <!-- Spacer -->
+    <div style="flex:1;min-height:20px;"></div>
+
+    <!-- Save Button -->
+    <button class="btn btn-primary" style="margin-bottom:var(--lg);">저장하기</button>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- S05: TODO DETAIL                               -->
+<!-- ============================================== -->
+<div class="screen-info" id="info-s05" style="display:none;">
+  <strong>S05 - Todo Detail</strong><br>
+  390 x 844 | iPhone 14 | Mobile First
+</div>
+<div class="phone-frame" id="screen-s05">
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>&#128267;</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-back">&#8592;</div>
+    <span class="header-title-center">할 일 상세</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content" style="padding:var(--lg);gap:0;overflow-y:auto;">
+    <!-- Title + Priority -->
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
+      <div style="font-size:22px;font-weight:700;line-height:30px;flex:1;">프로젝트 회의 준비</div>
+      <span class="badge badge-high" style="margin-top:4px;flex-shrink:0;">높음</span>
+    </div>
+
+    <!-- Separator -->
+    <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+
+    <!-- Info Rows -->
+    <div class="info-row">
+      <span class="info-icon">&#128197;</span>
+      <span class="info-label">마감일</span>
+      <span class="info-value">2026.03.10 18:00</span>
+    </div>
+    <div class="info-row">
+      <span class="info-icon">&#128336;</span>
+      <span class="info-label">생성일</span>
+      <span class="info-value">2026.03.05 09:30</span>
+    </div>
+
+    <!-- Separator -->
+    <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+
+    <!-- Memo Section -->
+    <div class="memo-section" style="margin-bottom:auto;">
+      <div class="memo-label">
+        <span>&#128221;</span> 메모
+      </div>
+      <div class="memo-content">
+        Figma로 만든 시안 피드백을<br>발표 자료에 포함시키면 좋을 듯.
+      </div>
+    </div>
+
+    <!-- Spacer -->
+    <div style="flex:1;min-height:32px;"></div>
+
+    <!-- Button Group -->
+    <div class="btn-row" style="margin-bottom:12px;">
+      <button class="btn btn-outline">수정</button>
+      <button class="btn btn-danger">삭제</button>
+    </div>
+    <button class="btn btn-primary" style="margin-bottom:var(--lg);">할 일 완료</button>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- S06: COMPLETED LIST                            -->
+<!-- ============================================== -->
+<div class="screen-info" id="info-s06" style="display:none;">
+  <strong>S06 - Completed List</strong><br>
+  390 x 844 | iPhone 14 | Mobile First
+</div>
+<div class="phone-frame" id="screen-s06">
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>&#128267;</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="header-title">완료 목록</span>
+    <div class="header-action">&#128465;</div>
+  </div>
+
+  <!-- Summary -->
+  <div style="padding:4px var(--lg) var(--md);font-size:13px;color:var(--text-secondary);">
+    이번 주 완료 5건
+  </div>
+
+  <!-- Content / Completed List -->
+  <div class="content" style="padding:0 var(--md);gap:var(--sm);">
+    <!-- Completed Card 1 -->
+    <div class="completed-card">
+      <span class="completed-icon">&#9989;</span>
+      <div class="completed-info">
+        <div class="completed-title">팀원 피드백 정리</div>
+        <div class="completed-date">오늘 14:22</div>
+      </div>
+      <div class="restore-btn">&#8617;</div>
+    </div>
+
+    <!-- Completed Card 2 -->
+    <div class="completed-card">
+      <span class="completed-icon">&#9989;</span>
+      <div class="completed-info">
+        <div class="completed-title">프로젝트 계획서</div>
+        <div class="completed-date">어제</div>
+      </div>
+      <div class="restore-btn">&#8617;</div>
+    </div>
+
+    <!-- Completed Card 3 -->
+    <div class="completed-card">
+      <span class="completed-icon">&#9989;</span>
+      <div class="completed-info">
+        <div class="completed-title">디자인 검토</div>
+        <div class="completed-date">3월 2일</div>
+      </div>
+      <div class="restore-btn">&#8617;</div>
+    </div>
+
+    <!-- Completed Card 4 -->
+    <div class="completed-card">
+      <span class="completed-icon">&#9989;</span>
+      <div class="completed-info">
+        <div class="completed-title">문서 작성</div>
+        <div class="completed-date">2월 28일</div>
+      </div>
+      <div class="restore-btn">&#8617;</div>
+    </div>
+
+    <!-- Completed Card 5 -->
+    <div class="completed-card">
+      <span class="completed-icon">&#9989;</span>
+      <div class="completed-info">
+        <div class="completed-title">코드 리뷰</div>
+        <div class="completed-date">2월 27일</div>
+      </div>
+      <div class="restore-btn">&#8617;</div>
+    </div>
+
+    <!-- Hint -->
+    <div style="text-align:center;padding:20px 0;font-size:12px;color:var(--text-disabled);">
+      &#8592; 스와이프하여 삭제
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#127968;</span>
+      <span>홈</span>
+    </div>
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#128269;</span>
+      <span>검색</span>
+    </div>
+    <div class="bottom-nav-item active">
+      <span class="bottom-nav-icon">&#9989;</span>
+      <span>완료</span>
+    </div>
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#128100;</span>
+      <span>마이</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- S07: MY PAGE                                   -->
+<!-- ============================================== -->
+<div class="screen-info" id="info-s07" style="display:none;">
+  <strong>S07 - MyPage</strong><br>
+  390 x 844 | iPhone 14 | Mobile First
+</div>
+<div class="phone-frame" id="screen-s07">
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-icons">
+      <span>&#9679;&#9679;&#9679;&#9679;</span>
+      <span>&#128267;</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="header-title-center">마이페이지</span>
+  </div>
+
+  <!-- Content -->
+  <div class="content" style="overflow-y:auto;">
+    <!-- Profile Section -->
+    <div style="display:flex;flex-direction:column;align-items:center;padding:24px 0 32px;">
+      <div class="avatar">&#128100;</div>
+      <div style="margin-top:16px;font-size:20px;font-weight:600;">홍길동</div>
+      <div style="margin-top:4px;font-size:14px;color:var(--text-secondary);">hong@example.com</div>
+    </div>
+
+    <!-- Divider -->
+    <div style="height:8px;background:var(--surface);"></div>
+
+    <!-- Settings List -->
+    <div style="padding:0 var(--lg);">
+      <div class="list-tile">
+        <span class="list-tile-text">알림 설정</span>
+        <div class="switch"><div class="knob"></div></div>
+      </div>
+      <div class="list-tile">
+        <span class="list-tile-text">테마</span>
+        <span class="list-tile-action">&#8250;</span>
+      </div>
+      <div class="list-tile">
+        <span class="list-tile-text">비밀번호 변경</span>
+        <span class="list-tile-action">&#8250;</span>
+      </div>
+      <div class="list-tile" style="border-bottom:none;">
+        <span class="list-tile-text">로그아웃</span>
+        <span class="list-tile-action">&#8250;</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div style="height:8px;background:var(--surface);"></div>
+
+    <!-- Logout Button -->
+    <div style="padding:var(--lg);">
+      <button class="btn btn-outline" style="color:var(--error);border-color:var(--error);">로그아웃</button>
+    </div>
+
+    <div style="flex:1;"></div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#127968;</span>
+      <span>홈</span>
+    </div>
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#128269;</span>
+      <span>검색</span>
+    </div>
+    <div class="bottom-nav-item">
+      <span class="bottom-nav-icon">&#9989;</span>
+      <span>완료</span>
+    </div>
+    <div class="bottom-nav-item active">
+      <span class="bottom-nav-icon">&#128100;</span>
+      <span>마이</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function showScreen(id) {
+  // Hide all screens and info
+  document.querySelectorAll('.phone-frame').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.screen-info').forEach(el => el.style.display = 'none');
+  document.querySelector('.token-panel').classList.remove('active');
+
+  // Deactivate all tabs
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+
+  if (id === 'tokens') {
+    document.getElementById('panel-tokens').classList.add('active');
+  } else {
+    document.getElementById('screen-' + id).classList.add('active');
+    document.getElementById('info-' + id).style.display = 'block';
+  }
+
+  // Activate clicked tab
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>

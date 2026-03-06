@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <defs>
+    <linearGradient id="illustBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#EFF6FF"/>
+      <stop offset="100%" stop-color="#DBEAFE"/>
+    </linearGradient>
+    <linearGradient id="logoBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="390" height="844" fill="#FFFFFF"/>
+
+  <!-- Status Bar -->
+  <text x="36" y="40" font-family="-apple-system,SF Pro Display,sans-serif" font-size="15" font-weight="700" fill="#1F2937">9:41</text>
+  <circle cx="320" cy="36" r="2" fill="#1F2937"/>
+  <circle cx="328" cy="36" r="2" fill="#1F2937"/>
+  <circle cx="336" cy="36" r="2" fill="#1F2937"/>
+  <rect x="346" y="30" width="22" height="12" rx="3" fill="none" stroke="#1F2937" stroke-width="1.5"/>
+  <rect x="348" y="32" width="14" height="8" rx="2" fill="#1F2937"/>
+
+  <!-- Illustration Circle -->
+  <circle cx="195" cy="280" r="100" fill="url(#illustBg)"/>
+
+  <!-- Checklist Icon inside circle -->
+  <rect x="163" y="248" width="64" height="64" rx="8" fill="#2563EB" opacity="0.15"/>
+  <rect x="167" y="252" width="56" height="56" rx="6" fill="white"/>
+  <rect x="167" y="252" width="56" height="56" rx="6" fill="none" stroke="#2563EB" stroke-width="1.5"/>
+  <!-- Check items -->
+  <circle cx="183" cy="272" r="4" fill="#22C55E"/>
+  <path d="M181 272 L182.5 273.5 L185 271" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="193" y1="272" x2="213" y2="272" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="183" cy="286" r="4" fill="#E2E8F0"/>
+  <line x1="193" y1="286" x2="210" y2="286" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <circle cx="183" cy="300" r="4" fill="#E2E8F0"/>
+  <line x1="193" y1="300" x2="207" y2="300" stroke="#2563EB" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
+
+  <!-- Page Indicator -->
+  <rect x="164" y="420" width="24" height="8" rx="4" fill="#2563EB"/>
+  <circle cx="200" cy="424" r="4" fill="#E2E8F0"/>
+  <circle cx="216" cy="424" r="4" fill="#E2E8F0"/>
+
+  <!-- Title -->
+  <text x="195" y="480" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="24" font-weight="700" fill="#1F2937" text-anchor="middle">할 일을 쉽고 빠르게 관리</text>
+
+  <!-- Description -->
+  <text x="195" y="512" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" fill="#6B7280" text-anchor="middle">
+    <tspan x="195" dy="0">TodoList로 매일 매일을</tspan>
+    <tspan x="195" dy="22">계획적으로 관리하세요.</tspan>
+  </text>
+
+  <!-- Button: Primary "시작하기" -->
+  <rect x="24" y="604" width="342" height="48" rx="8" fill="#2563EB"/>
+  <text x="195" y="634" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="16" font-weight="600" fill="white" text-anchor="middle">시작하기</text>
+
+  <!-- Link: 건너뛰기 -->
+  <text x="195" y="690" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="14" fill="#6B7280" text-anchor="middle">건너뛰기</text>
+
+  <!-- Home Indicator -->
+  <rect x="127" y="826" width="136" height="5" rx="2.5" fill="#1F2937" opacity="0.2"/>
+</svg>

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <!-- Background -->
+  <rect width="390" height="844" fill="#FFFFFF"/>
+
+  <!-- Status Bar -->
+  <text x="36" y="40" font-family="-apple-system,SF Pro Display,sans-serif" font-size="15" font-weight="700" fill="#1F2937">9:41</text>
+  <rect x="346" y="30" width="22" height="12" rx="3" fill="none" stroke="#1F2937" stroke-width="1.5"/>
+  <rect x="348" y="32" width="14" height="8" rx="2" fill="#1F2937"/>
+
+  <!-- Header -->
+  <text x="24" y="82" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="20" font-weight="700" fill="#1F2937">오늘의 할 일</text>
+  <!-- Settings icon -->
+  <circle cx="358" cy="76" r="9" fill="none" stroke="#6B7280" stroke-width="1.5"/>
+  <circle cx="358" cy="76" r="3" fill="#6B7280"/>
+
+  <!-- Tab Bar -->
+  <rect x="0" y="100" width="390" height="44" fill="#FFFFFF"/>
+  <line x1="0" y1="143" x2="390" y2="143" stroke="#E2E8F0" stroke-width="2"/>
+  <!-- Active tab -->
+  <text x="65" y="128" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="600" fill="#2563EB" text-anchor="middle">오늘</text>
+  <line x1="30" y1="142" x2="100" y2="142" stroke="#2563EB" stroke-width="2"/>
+  <!-- Inactive tabs -->
+  <text x="195" y="128" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="500" fill="#6B7280" text-anchor="middle">전체</text>
+  <text x="325" y="128" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="500" fill="#6B7280" text-anchor="middle">태그별</text>
+
+  <!-- Progress Section -->
+  <text x="24" y="176" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="14" fill="#6B7280">오늘의 진행률</text>
+  <text x="366" y="176" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="14" font-weight="600" fill="#2563EB" text-anchor="end">3/5</text>
+  <!-- Progress bar bg -->
+  <rect x="24" y="186" width="342" height="8" rx="4" fill="#E2E8F0"/>
+  <!-- Progress bar fill (60%) -->
+  <rect x="24" y="186" width="205" height="8" rx="4" fill="#2563EB"/>
+
+  <!-- Todo Card 1 -->
+  <rect x="16" y="214" width="358" height="72" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+  <filter id="shadow1"><feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#000" flood-opacity="0.05"/></filter>
+  <!-- Checkbox -->
+  <rect x="32" y="232" width="22" height="22" rx="6" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+  <!-- Title -->
+  <text x="68" y="248" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="500" fill="#1F2937">프로젝트 회의 준비</text>
+  <text x="68" y="268" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="12" fill="#6B7280">오늘 18:00</text>
+  <!-- Priority dot: High (red) -->
+  <circle cx="354" cy="243" r="5" fill="#EF4444"/>
+
+  <!-- Todo Card 2 -->
+  <rect x="16" y="294" width="358" height="72" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="32" y="312" width="22" height="22" rx="6" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="68" y="328" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="500" fill="#1F2937">운동 하기</text>
+  <text x="68" y="348" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="12" fill="#6B7280">오늘 14:00</text>
+  <circle cx="354" cy="323" r="5" fill="#F59E0B"/>
+
+  <!-- Todo Card 3 -->
+  <rect x="16" y="374" width="358" height="72" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+  <rect x="32" y="392" width="22" height="22" rx="6" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+  <text x="68" y="408" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="500" fill="#1F2937">책 1장 읽기</text>
+  <text x="68" y="428" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="12" fill="#6B7280">오늘 13:00</text>
+  <circle cx="354" cy="403" r="5" fill="#22C55E"/>
+
+  <!-- Todo Card 4 (Completed) -->
+  <g opacity="0.7">
+    <rect x="16" y="454" width="358" height="72" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+    <rect x="32" y="472" width="22" height="22" rx="6" fill="#2563EB"/>
+    <path d="M38 483 L41 486 L48 479" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="68" y="488" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="500" fill="#9CA3AF" text-decoration="line-through">이메일 확인</text>
+    <text x="68" y="508" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="12" fill="#6B7280">오늘</text>
+  </g>
+
+  <!-- Todo Card 5 (Completed) -->
+  <g opacity="0.7">
+    <rect x="16" y="534" width="358" height="72" rx="12" fill="white" stroke="#E2E8F0" stroke-width="1"/>
+    <rect x="32" y="552" width="22" height="22" rx="6" fill="#2563EB"/>
+    <path d="M38 563 L41 566 L48 559" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="68" y="568" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="15" font-weight="500" fill="#9CA3AF" text-decoration="line-through">아침 회의 참석</text>
+    <text x="68" y="588" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="12" fill="#6B7280">오늘 09:00</text>
+  </g>
+
+  <!-- FAB -->
+  <circle cx="346" cy="680" r="28" fill="#2563EB"/>
+  <line x1="334" y1="680" x2="358" y2="680" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="346" y1="668" x2="346" y2="692" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Bottom Nav Background -->
+  <rect x="0" y="760" width="390" height="84" fill="#FFFFFF"/>
+  <line x1="0" y1="760" x2="390" y2="760" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- Bottom Nav: Home (active) -->
+  <text x="49" y="788" font-family="-apple-system,SF Pro Display,sans-serif" font-size="20" fill="#2563EB" text-anchor="middle">&#8962;</text>
+  <text x="49" y="804" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="11" fill="#2563EB" text-anchor="middle">홈</text>
+
+  <!-- Bottom Nav: Search -->
+  <circle cx="146" cy="782" r="8" fill="none" stroke="#9CA3AF" stroke-width="1.5"/>
+  <line x1="152" y1="788" x2="156" y2="792" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="146" y="804" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="11" fill="#9CA3AF" text-anchor="middle">검색</text>
+
+  <!-- Bottom Nav: Completed -->
+  <circle cx="244" cy="782" r="7" fill="none" stroke="#9CA3AF" stroke-width="1.5"/>
+  <path d="M240 782 L243 785 L248 780" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="244" y="804" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="11" fill="#9CA3AF" text-anchor="middle">완료</text>
+
+  <!-- Bottom Nav: My -->
+  <circle cx="341" cy="780" r="6" fill="none" stroke="#9CA3AF" stroke-width="1.5"/>
+  <path d="M334 792 C334 788 337 786 341 786 C345 786 348 788 348 792" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round"/>
+  <text x="341" y="804" font-family="-apple-system,Pretendard,SF Pro Display,sans-serif" font-size="11" fill="#9CA3AF" text-anchor="middle">마이</text>
+
+  <!-- Home Indicator -->
+  <rect x="127" y="826" width="136" height="5" rx="2.5" fill="#1F2937" opacity="0.2"/>
+</svg>
