@@ -51,17 +51,20 @@ class FeatureController extends GetxController {
   // 2. Repository instance
   final _featureRepository = FeatureRepository();
 
-  // 3. State variables (Rx)
+  // 3. State variables (상태 변수 + getter/setter를 함께 배치)
   final _isLoading = false.obs;
-  final _dataList = <FeatureResponse>[].obs;
-
-  // 4. Getter/Setter
   bool get isLoading => _isLoading.value;
   set isLoading(bool val) => _isLoading.value = val;
 
+  final _dataList = <FeatureResponse>[].obs;
   List<FeatureResponse> get dataList => _dataList;
+  set dataList(List<FeatureResponse> val) => _dataList.assignAll(val);
 
-  // 5. UI Controllers
+  final _errorMessage = ''.obs;
+  String get errorMessage => _errorMessage.value;
+  set errorMessage(String val) => _errorMessage.value = val;
+
+  // 4. UI Controllers
   final searchController = TextEditingController();
 
   // 6. Lifecycle
@@ -135,17 +138,104 @@ UI Agent가 이 컨트롤러를 사용하여 뷰를 생성할 수 있습니다.
 
 1. **GetX 패턴**: `extends GetxController` 사용
 2. **상태 관리**: `.obs`와 getter/setter 쌍으로 관리
-3. **API 호출 금지**: Repository 클래스를 주입받아 사용
-4. **에러 처리**: `try-catch` + `EasyloadingService.to`로 사용자 피드백
-5. **담당 영역 준수**: controllers, bindings 폴더 외 파일 수정 금지
-6. **문서 준수**: 반드시 참조 문서의 패턴을 따른다
+3. **상태 변수 배치**: 상태 변수와 해당 getter/setter를 함께 그룹화
+4. **API 호출 금지**: Repository 클래스를 주입받아 사용
+5. **에러 처리**: `try-catch` + `EasyloadingService.to`로 사용자 피드백
+6. **담당 영역 준수**: controllers, bindings 폴더 외 파일 수정 금지
+7. **문서 준수**: 반드시 참조 문서의 패턴을 따른다
+
+## 상태 변수 코드 스타일 (중요)
+
+**올바른 예시** - 상태 변수와 getter/setter를 함께 배치:
+```dart
+// 로딩 상태
+final _isLoading = false.obs;
+bool get isLoading => _isLoading.value;
+set isLoading(bool val) => _isLoading.value = val;
+
+// 데이터 목록
+final _todoList = <TodoModel>[].obs;
+List<TodoModel> get todoList => _todoList;
+set todoList(List<TodoModel> val) => _todoList.assignAll(val);
+
+// 에러 메시지
+final _errorMessage = ''.obs;
+String get errorMessage => _errorMessage.value;
+set errorMessage(String val) => _errorMessage.value = val;
+```
+
+**잘못된 예시** - 상태 변수와 getter/setter 분리:
+```dart
+// ❌ 이렇게 하지 마세요
+final _isLoading = false.obs;
+final _todoList = <TodoModel>[].obs;
+final _errorMessage = ''.obs;
+
+bool get isLoading => _isLoading.value;
+List<TodoModel> get todoList => _todoList;
+String get errorMessage => _errorMessage.value;
+```
+
+## 함수 주석 규칙 (중요)
+
+모든 비즈니스 로직 메서드에는 Dart Doc 주석을 작성한다.
+인자가 있는 함수는 반드시 `@param` 설명을 포함한다.
+
+**올바른 예시:**
+```dart
+/// 할 일 목록을 조회한다.
+///
+/// [filter] 필터 타입 (today, all, byTag)
+/// [tagId] 태그별 필터 시 태그 ID (선택)
+Future<void> fetchTodos({TodoFilter? filter, int? tagId}) async {
+  // ...
+}
+
+/// 할 일을 완료 처리한다.
+///
+/// [id] 완료 처리할 할 일 ID
+Future<void> completeTodo(int id) async {
+  // ...
+}
+
+/// 할 일을 삭제한다.
+///
+/// [id] 삭제할 할 일 ID
+/// [permanent] true면 영구 삭제, false면 휴지통으로 이동
+Future<void> deleteTodo(int id, {bool permanent = false}) async {
+  // ...
+}
+
+/// 페이지를 변경한다.
+///
+/// [index] 이동할 페이지 인덱스 (0부터 시작)
+void onPageChanged(int index) {
+  // ...
+}
+```
+
+**인자가 없는 함수:**
+```dart
+/// 데이터를 새로고침한다.
+Future<void> refresh() async {
+  // ...
+}
+
+/// 로그아웃을 처리한다.
+Future<void> logout() async {
+  // ...
+}
+```
 
 ## 품질 기준
 
 - Singleton accessor 패턴 적용 (`static get to => Get.find()`)
-- 모든 상태 변수는 private + Rx + getter/setter
+- 모든 상태 변수는 private + Rx + getter/setter (함께 배치)
+- List 타입은 setter에서 `assignAll()` 사용
 - UI Controller는 onClose에서 dispose
 - 비즈니스 로직 메서드는 try-catch로 에러 처리
+- 모든 public 메서드에 Dart Doc 주석 작성
+- 인자가 있는 함수는 `[param]` 형식으로 설명 추가
 - 네이밍 규칙 및 주석 규칙 준수
 
 ## Update Your Agent Memory
