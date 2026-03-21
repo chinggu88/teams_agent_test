@@ -1,3 +1,6 @@
+# Secrets / API Keys
+.mcp.json
+
 # Miscellaneous
 *.class
 *.log
