@@ -1,0 +1,1 @@
+- [Project patterns](patterns.md) — GetX controller/binding conventions confirmed in testuram project

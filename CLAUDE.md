@@ -77,6 +77,10 @@ lib/
 | 화면 가이드 | docs/widget/screen.md |
 | 팀 구성 | flutter_teams.md |
 | 태스크 목록 | docs/task/TASKS.md |
+| 개발/유지보수 지침 | docs/guide/development_maintenance.md |
+| ERD | docs/guide/erd.md |
+| 유즈케이스 | docs/guide/usecase.md |
+| 와이어프레임 | docs/guide/wireframe.md |
 
 ## 팀 에이전트 워크플로우
 
@@ -88,9 +92,25 @@ lib/
 
 | 커맨드 | 역할 | 설명 |
 |--------|------|------|
-| `/task-create` | Task Creator | 사용자 입력 수집 → TASKS.md 생성 |
+| `/task-create` (율곡아) | Task Creator | 요청 분석 → 개발유형/파일목록/QA항목 포함한 TASKS.md 생성 |
 | `/team-lead` | 팀 리드 | TASKS.md 읽기 → 서브 Agent에게 작업 분배 및 실행 |
 | `/api-agent` | API Agent | models, repositories 생성 |
 | `/controller-agent` | Controller Agent | controllers, bindings 생성 |
 | `/ui-agent` | UI Agent | views, widgets 생성 |
 | `/architecture-update` | Architecture Updater | docs/architecture.md 업데이트 |
+
+### /task-create 사용 가이드
+
+기능 구현 요청을 `docs/task/TASKS.md` 문서로 변환한다. 생성 문서에는 다음 3가지가 포함된다:
+1. **개발 유형** — 신규개발 또는 유지보수 분류 및 판단 근거
+2. **파일 목록** — 신규 생성 파일 / 수정 파일 목록
+3. **QA 체크리스트** — 기능 테스트, 엣지 케이스, UI/UX 항목
+
+**입력 예시:**
+- `율곡아 장바구니 기능 추가해줘`
+- `율곡아 로그인 화면 소셜 로그인 버튼 수정해줘`
+- `율곡아 주문 내역 조회 화면 구성해줘`
+
+**생성 문서:** `docs/task/TASKS.md`
+
+**다음 단계:** `/team-lead` 실행

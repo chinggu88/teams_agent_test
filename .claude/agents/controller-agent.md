@@ -52,14 +52,17 @@ class FeatureController extends GetxController {
   final _featureRepository = FeatureRepository();
 
   // 3. State variables (상태 변수 + getter/setter를 함께 배치)
+  // API 요청 중 로딩 상태 여부
   final _isLoading = false.obs;
   bool get isLoading => _isLoading.value;
   set isLoading(bool val) => _isLoading.value = val;
 
+  // 화면에 표시할 데이터 목록
   final _dataList = <FeatureResponse>[].obs;
   List<FeatureResponse> get dataList => _dataList;
   set dataList(List<FeatureResponse> val) => _dataList.assignAll(val);
 
+  // 에러 발생 시 사용자에게 표시할 메시지
   final _errorMessage = ''.obs;
   String get errorMessage => _errorMessage.value;
   set errorMessage(String val) => _errorMessage.value = val;
@@ -139,26 +142,27 @@ UI Agent가 이 컨트롤러를 사용하여 뷰를 생성할 수 있습니다.
 1. **GetX 패턴**: `extends GetxController` 사용
 2. **상태 관리**: `.obs`와 getter/setter 쌍으로 관리
 3. **상태 변수 배치**: 상태 변수와 해당 getter/setter를 함께 그룹화
-4. **API 호출 금지**: Repository 클래스를 주입받아 사용
-5. **에러 처리**: `try-catch` + `EasyloadingService.to`로 사용자 피드백
-6. **담당 영역 준수**: controllers, bindings 폴더 외 파일 수정 금지
-7. **문서 준수**: 반드시 참조 문서의 패턴을 따른다
+4. **변수 주석 필수**: 모든 `.obs` 변수 선언 위에 역할과 의미를 설명하는 한 줄 주석 작성
+5. **API 호출 금지**: Repository 클래스를 주입받아 사용
+6. **에러 처리**: `try-catch` + `EasyloadingService.to`로 사용자 피드백
+7. **담당 영역 준수**: controllers, bindings 폴더 외 파일 수정 금지
+8. **문서 준수**: 반드시 참조 문서의 패턴을 따른다
 
 ## 상태 변수 코드 스타일 (중요)
 
-**올바른 예시** - 상태 변수와 getter/setter를 함께 배치:
+**올바른 예시** - 상태 변수와 getter/setter를 함께 배치 (변수마다 의미 주석 필수):
 ```dart
-// 로딩 상태
+// API 요청 중 로딩 여부를 나타내는 상태
 final _isLoading = false.obs;
 bool get isLoading => _isLoading.value;
 set isLoading(bool val) => _isLoading.value = val;
 
-// 데이터 목록
+// 화면에 표시할 할 일 목록
 final _todoList = <TodoModel>[].obs;
 List<TodoModel> get todoList => _todoList;
 set todoList(List<TodoModel> val) => _todoList.assignAll(val);
 
-// 에러 메시지
+// 오류 발생 시 사용자에게 표시할 에러 메시지
 final _errorMessage = ''.obs;
 String get errorMessage => _errorMessage.value;
 set errorMessage(String val) => _errorMessage.value = val;
@@ -174,6 +178,55 @@ final _errorMessage = ''.obs;
 bool get isLoading => _isLoading.value;
 List<TodoModel> get todoList => _todoList;
 String get errorMessage => _errorMessage.value;
+```
+
+## 변수 주석 규칙 (중요)
+
+모든 상태 변수(`.obs`) 선언 위에 해당 변수의 역할과 의미를 설명하는 한 줄 주석을 반드시 작성한다.
+
+**규칙:**
+- 변수 선언 바로 위에 `//` 주석으로 작성
+- 변수가 어떤 데이터를 담고, 언제 사용되는지 명확히 설명
+- getter/setter에는 중복 주석 불필요 (변수 선언 위에만 작성)
+
+**올바른 예시:**
+```dart
+// 현재 선택된 탭 인덱스 (0: 홈, 1: 검색, 2: 프로필)
+final _selectedIndex = 0.obs;
+int get selectedIndex => _selectedIndex.value;
+set selectedIndex(int val) => _selectedIndex.value = val;
+
+// 서버에서 불러온 사용자 정보 (null이면 미로그인 상태)
+final _user = Rxn<UserModel>();
+UserModel? get user => _user.value;
+set user(UserModel? val) => _user.value = val;
+
+// 검색 결과 목록 (검색어 없으면 빈 배열)
+final _searchResults = <ProductModel>[].obs;
+List<ProductModel> get searchResults => _searchResults;
+set searchResults(List<ProductModel> val) => _searchResults.assignAll(val);
+
+// 전체 페이지 중 현재 페이지 번호 (1부터 시작)
+final _currentPage = 1.obs;
+int get currentPage => _currentPage.value;
+set currentPage(int val) => _currentPage.value = val;
+
+// 다음 페이지 존재 여부 (false면 더 이상 로드하지 않음)
+final _hasMore = true.obs;
+bool get hasMore => _hasMore.value;
+set hasMore(bool val) => _hasMore.value = val;
+```
+
+**잘못된 예시:**
+```dart
+// ❌ 주석 없이 변수만 선언
+final _selectedIndex = 0.obs;
+int get selectedIndex => _selectedIndex.value;
+set selectedIndex(int val) => _selectedIndex.value = val;
+
+// ❌ 의미 없는 주석 (변수명 반복)
+// selectedIndex
+final _selectedIndex = 0.obs;
 ```
 
 ## 함수 주석 규칙 (중요)
@@ -231,6 +284,7 @@ Future<void> logout() async {
 
 - Singleton accessor 패턴 적용 (`static get to => Get.find()`)
 - 모든 상태 변수는 private + Rx + getter/setter (함께 배치)
+- **모든 `.obs` 변수 선언 위에 역할/의미 주석 필수** (어떤 데이터인지, 언제 사용되는지)
 - List 타입은 setter에서 `assignAll()` 사용
 - UI Controller는 onClose에서 dispose
 - 비즈니스 로직 메서드는 try-catch로 에러 처리
