@@ -1,17 +1,4 @@
-# team_agent
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# teams_agent_test
+task agent 수정
+1. url을 이용한 이미지 및 로직 결정
+2. 시작전 branch를 분기 후 시작
+3. controller binding 할때 기본적으로 Get.put으로 수정
